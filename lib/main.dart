@@ -1,5 +1,8 @@
+import 'package:elas_promocoes/promocao.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ProviderScope, Provider, StreamProvider;
+import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +13,7 @@ Future<void> main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5ZWNzd2ZzY2FqZGtoeHJvZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjYwMjA4MTcsImV4cCI6MTk4MTU5NjgxN30.eiIil0XlzKvTFuxtla8H18NjB1Dkwe3bNvBTS0TrJcI',
   );
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -122,3 +125,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+final supabaseProvider = Provider((ref) => Supabase.instance.client);
+
+final promocoesStreamProvider = StreamProvider(
+  (ref) => ref
+      .watch(supabaseProvider)
+      .from('promocao')
+      .stream(['id'])
+      .order('criado_em')
+      .execute()
+      .map(
+        (maps) => maps.map((json) => Promocao.fromJson(json)).toList(),
+      ),
+);
