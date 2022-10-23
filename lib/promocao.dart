@@ -5,6 +5,7 @@ class Promocao {
   final String imagemUrl;
   final String? cupom;
   final DateTime criadoEm;
+  final int valor;
 
   Promocao({
     required this.id,
@@ -13,14 +14,16 @@ class Promocao {
     required this.imagemUrl,
     this.cupom,
     required this.criadoEm,
+    required this.valor,
   });
 
   factory Promocao.fromJson(Map<String, dynamic> json) => Promocao(
         id: json['id'],
         nome: json['nome'],
         url: json['url'],
-        imagemUrl: json['imagem'],
+        imagemUrl: json['img_url'],
         criadoEm: DateTime.parse(json['criado_em']),
         cupom: json['cupom'],
+        valor: json['valor'],
       );
 }
