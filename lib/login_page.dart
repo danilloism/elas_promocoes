@@ -1,3 +1,4 @@
+import 'package:elas_promocoes/generated/assets.dart';
 import 'package:elas_promocoes/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,12 +42,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/logo.png',
+                  Assets.logo,
                   height: MediaQuery.of(context).size.height / 4,
                 ),
                 TextFormField(
                   validator: _emptyValidator,
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 TextFormField(
                   validator: _emptyValidator,

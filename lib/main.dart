@@ -1,4 +1,6 @@
+import 'package:elas_promocoes/editor_promocao.dart';
 import 'package:elas_promocoes/firebase_options.dart';
+import 'package:elas_promocoes/generated/assets.dart';
 import 'package:elas_promocoes/logger.dart';
 import 'package:elas_promocoes/login_page.dart';
 import 'package:elas_promocoes/providers.dart';
@@ -47,11 +49,25 @@ class MyHomePage extends ConsumerWidget {
         centerTitle: true,
         toolbarHeight: 120,
         title: Image.asset(
-          'assets/logo.png',
+          Assets.logo,
           fit: BoxFit.contain,
           height: 120,
           isAntiAlias: true,
         ),
+        leading: logado
+            ? Builder(builder: (context) {
+                return IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const EditorPromocao();
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.add));
+              })
+            : null,
         actions: logado
             ? [
                 IconButton(
