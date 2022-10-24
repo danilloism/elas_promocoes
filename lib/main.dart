@@ -57,14 +57,10 @@ class MyHomePage extends ConsumerWidget {
         leading: logado
             ? Builder(builder: (context) {
                 return IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const EditorPromocao();
-                        },
-                      );
-                    },
+                    onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => const EditorPromocao(),
+                        ),
                     icon: const Icon(Icons.add));
               })
             : null,
@@ -79,24 +75,28 @@ class MyHomePage extends ConsumerWidget {
             : null,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
+          const Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView(
-                children: const [
-                  Text('Texto'),
-                ],
+              padding: EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Text('Texto'),
               ),
             ),
           ),
           if (!logado)
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const LoginPage()));
-                },
-                child: const Center(child: Text('Administrador'))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const LoginPage()));
+                    },
+                    child: const Text('Administrador')),
+              ],
+            ),
         ],
       ),
     );
