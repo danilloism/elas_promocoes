@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:elas_promocoes/promocao.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +24,7 @@ class EditorPromocao extends HookWidget {
     final link = useTextEditingController();
     final cupom = useTextEditingController();
     final descricao = useTextEditingController();
-    final imageFile = useState<File?>(null);
+    final pickedFile = useState<XFile?>(null);
     final key = useState(GlobalKey<FormState>());
     final picker = useState(ImagePicker());
     return Form(
@@ -41,7 +42,7 @@ class EditorPromocao extends HookWidget {
           ElevatedButton(
               onPressed: () {
                 if (key.value.currentState!.validate()) {
-                  if (imageFile.value == null && !_isEditar) {
+                  if (pickedFile.value == null && !_isEditar) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Nenhuma imagem foi selecionada.')));
                     return;
@@ -68,15 +69,24 @@ class EditorPromocao extends HookWidget {
                 validator: _emptyValidator,
               ),
               const Text('Imagem:'),
-              if (imageFile.value != null)
-                Image.file(imageFile.value!, fit: BoxFit.fitWidth),
+              if (pickedFile.value != null)
+                kIsWeb
+                    ? Image.network(pickedFile.value!.path)
+                    : Image.file(File(pickedFile.value!.path)),
               ElevatedButton(
+                  style: pickedFile.value != null
+                      ? ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                          ),
+                        )
+                      : null,
                   onPressed: () async {
-                    final imagem = await picker.value.pickImage(
+                    pickedFile.value = await picker.value.pickImage(
                         source: ImageSource.gallery, imageQuality: 50);
-                    if (imagem != null) {
-                      imageFile.value = File(imagem.path);
-                    }
                   },
                   child: const Text('Selecionar Imagem.')),
               const Text('Cupom de promoção:'),

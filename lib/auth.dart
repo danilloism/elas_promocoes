@@ -19,6 +19,7 @@ enum _AuthExceptionType {
 class AuthException implements Exception {
   late final String mensagem;
 
+  // ignore: library_private_types_in_public_api
   AuthException(_AuthExceptionType tipo) {
     mensagem = tipo.mensagem;
   }
