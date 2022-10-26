@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:elas_promocoes/editor_promocao.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
@@ -6,6 +8,7 @@ import 'package:elas_promocoes/login_page.dart';
 import 'package:elas_promocoes/promocao_card.dart';
 import 'package:elas_promocoes/providers.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,7 +34,11 @@ class MyApp extends StatelessWidget {
       title: 'Elas Promoções',
       theme: ThemeData(
         primarySwatch: Colors.orange,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
+        fontFamily: kIsWeb && window.navigator.userAgent.contains('OS 15_')
+            ? '-apple-system'
+            : null,
       ),
       home: const MyHomePage(),
     );
