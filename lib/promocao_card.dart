@@ -1,5 +1,6 @@
 import 'package:elas_promocoes/promocao.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PromocaoCard extends StatelessWidget {
@@ -50,12 +51,8 @@ class PromocaoCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextButton(
-                onPressed: () async {
-                  final uri = Uri.parse(promocao.url);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
-                  }
-                },
+                onPressed: () => Share.share(
+                    '${promocao.nome} por apenas ${promocao.valor}. Confira: ${promocao.url}'),
                 child: const Text(
                   'Compartilhar',
                   textAlign: TextAlign.center,

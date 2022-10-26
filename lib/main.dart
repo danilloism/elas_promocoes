@@ -101,6 +101,7 @@ class MyHomePage extends ConsumerWidget {
                           }
 
                           return Card(
+                            key: ValueKey(e.id),
                             child: Column(
                               children: [
                                 Row(
@@ -115,7 +116,7 @@ class MyHomePage extends ConsumerWidget {
                                         icon: const Icon(CupertinoIcons.trash)),
                                   ],
                                 ),
-                                PromocaoCard(promocao: e, key: ValueKey(e.id)),
+                                PromocaoCard(promocao: e),
                               ],
                             ),
                           );
