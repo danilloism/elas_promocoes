@@ -29,6 +29,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.dispose();
   }
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,23 +58,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_key.currentState!.validate()) {
-                      final email = _emailController.text;
-                      final senha = _senhaController.text;
-                      ref
-                          .read(authStateProvider.notifier)
-                          .logar(email: email, senha: senha)
-                          .whenComplete(() {
-                        if (mounted) {
-                          Navigator.of(context).pop();
-                        }
-                      });
-                    }
-                  },
-                  child: const Text('Entrar'),
-                ),
+                _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
+                        onPressed: () {
+                          if (_key.currentState!.validate()) {
+                            setState(() {
+                              _isLoading = true;
+                            });
+
+                            final email = _emailController.text;
+                            final senha = _senhaController.text;
+                            ref
+                                .read(authStateProvider.notifier)
+                                .logar(email: email, senha: senha)
+                                .whenComplete(() {
+                              if (mounted) {
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          }
+                        },
+                        child: const Text('Entrar'),
+                      ),
               ],
             ),
           ),

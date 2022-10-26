@@ -3,6 +3,7 @@ import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:elas_promocoes/logger.dart';
 import 'package:elas_promocoes/login_page.dart';
+import 'package:elas_promocoes/promocao_card.dart';
 import 'package:elas_promocoes/providers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -77,11 +78,26 @@ class MyHomePage extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
-                child: Text('Texto'),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
+                  children: ref.watch(promocoesStreamProvider).when(
+                        data: (data) => data
+                            .map((e) =>
+                                PromocaoCard(promocao: e, key: ValueKey(e.id)))
+                            .toList(),
+                        error: (_, __) => const [Text('Erro')],
+                        loading: () => const [
+                          Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ],
+                      ),
+                ),
               ),
             ),
           ),

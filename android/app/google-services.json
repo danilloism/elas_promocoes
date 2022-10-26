@@ -29,6 +29,13 @@
             {
               "client_id": "407957103785-rpicivb7gtf3n883mbsfoncshpmm49je.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "407957103785-8bvd08lpkjc5g360rvmucii09gv5gtb7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dnn.elasPromocoes"
+              }
             }
           ]
         }
