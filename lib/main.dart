@@ -8,6 +8,7 @@ import 'package:elas_promocoes/login_page.dart';
 import 'package:elas_promocoes/promocao_card.dart';
 import 'package:elas_promocoes/providers.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,10 +94,32 @@ class MyHomePage extends ConsumerWidget {
                   alignment: WrapAlignment.center,
                   spacing: 10,
                   children: ref.watch(promocoesStreamProvider).when(
-                        data: (data) => data
-                            .map((e) =>
-                                PromocaoCard(promocao: e, key: ValueKey(e.id)))
-                            .toList(),
+                        data: (data) => data.map((e) {
+                          if (ref.watch(authStateProvider) == null) {
+                            return PromocaoCard(
+                                promocao: e, key: ValueKey(e.id));
+                          }
+
+                          return Card(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextButton(
+                                        onPressed: () {},
+                                        child: const Text('Editar')),
+                                    const SizedBox(width: 12),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(CupertinoIcons.trash)),
+                                  ],
+                                ),
+                                PromocaoCard(promocao: e, key: ValueKey(e.id)),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                         error: (_, __) => const [Text('Erro')],
                         loading: () => const [
                           Center(
