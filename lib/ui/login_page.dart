@@ -70,7 +70,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             final email = _emailController.text;
                             final senha = _senhaController.text;
                             ref
-                                .read(authStateProvider.notifier)
+                                .read(authStateNotifierProvider.notifier)
                                 .logar(email: email, senha: senha)
                                 .whenComplete(() {
                               if (mounted) {

@@ -2,8 +2,7 @@ import 'dart:html';
 
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
-import 'package:elas_promocoes/providers.dart';
-import 'package:elas_promocoes/providers/auth_provider.dart';
+import 'package:elas_promocoes/providers/providers.dart';
 import 'package:elas_promocoes/services/logger.dart';
 import 'package:elas_promocoes/ui/editor_promocao.dart';
 import 'package:elas_promocoes/ui/login_page.dart';
@@ -52,8 +51,8 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final logado = ref.watch(authStateProvider) != null;
-    ref.listen(authStateProvider, (previous, next) {});
+    final logado = ref.watch(authStateNotifierProvider) != null;
+    ref.listen(authStateNotifierProvider, (previous, next) {});
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -78,7 +77,7 @@ class MyHomePage extends ConsumerWidget {
             ? [
                 IconButton(
                   onPressed: () =>
-                      ref.read(authStateProvider.notifier).deslogar(),
+                      ref.read(authStateNotifierProvider.notifier).deslogar(),
                   icon: const Icon(Icons.logout),
                 )
               ]
@@ -96,7 +95,7 @@ class MyHomePage extends ConsumerWidget {
                   spacing: 10,
                   children: ref.watch(promocoesStreamProvider).when(
                         data: (data) => data.map((e) {
-                          if (ref.watch(authStateProvider) == null) {
+                          if (ref.watch(authStateNotifierProvider) == null) {
                             return PromocaoCard(
                                 promocao: e, key: ValueKey(e.id));
                           }
