@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elas_promocoes/misc.dart';
 import 'package:elas_promocoes/promocao.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -77,8 +76,7 @@ class EditorPromocao extends HookWidget {
                         final imageData = await pickedFile.value!.readAsBytes();
                         final imageExtension =
                             pickedFile.value!.name.split('.').last;
-                        final uploadedImage = await FirebaseStorage.instance
-                            .refFromURL('gs://elas-promocoes.appspot.com')
+                        final uploadedImage = await storageRef
                             .child('imagens/${savedDoc.id}.$imageExtension')
                             .putData(imageData);
 

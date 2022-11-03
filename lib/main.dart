@@ -5,6 +5,7 @@ import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:elas_promocoes/logger.dart';
 import 'package:elas_promocoes/login_page.dart';
+import 'package:elas_promocoes/misc.dart';
 import 'package:elas_promocoes/promocao_card.dart';
 import 'package:elas_promocoes/providers.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +22,7 @@ Future<void> main() async {
   );
 
   runApp(ProviderScope(
-    observers: [Logger()],
+    observers: kReleaseMode ? null : [Logger()],
     child: const MyApp(),
   ));
 }
@@ -113,11 +114,51 @@ class MyHomePage extends ConsumerWidget {
                                     const SizedBox(width: 12),
                                     IconButton(
                                         onPressed: () {
-                                          ref
-                                              .read(firestoreProvider)
-                                              .collection('promocoes')
-                                              .doc(e.id)
-                                              .delete();
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text(
+                                                  "Confirmar exclusão do item ${e.nome}?"),
+                                              actions: [
+                                                ElevatedButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child:
+                                                        const Text("Cancelar")),
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      final refList =
+                                                          (await storageRef
+                                                                  .child(
+                                                                      'imagens')
+                                                                  .listAll())
+                                                              .items;
+                                                      final imgRef =
+                                                          refList.singleWhere(
+                                                              (reference) =>
+                                                                  reference.name
+                                                                      .contains(
+                                                                          e.id!));
+                                                      ref
+                                                          .read(
+                                                              firestoreProvider)
+                                                          .collection(
+                                                              'promocoes')
+                                                          .doc(e.id)
+                                                          .delete()
+                                                          .whenComplete(() =>
+                                                              imgRef.delete())
+                                                          .whenComplete(() =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop());
+                                                    },
+                                                    child: const Text(
+                                                        "Confirmar")),
+                                              ],
+                                            ),
+                                          );
                                         },
                                         icon: const Icon(CupertinoIcons.trash)),
                                   ],
