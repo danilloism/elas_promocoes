@@ -1,15 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elas_promocoes/auth.dart';
 import 'package:elas_promocoes/promocao.dart';
 import 'package:elas_promocoes/promocoes_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final _firebaseAuthProvider = Provider((ref) => FirebaseAuth.instance);
-
-final authStateProvider = StateNotifierProvider<AuthStateNotifier, User?>(
-    (ref) => AuthStateNotifier(ref.watch(_firebaseAuthProvider)));
 
 final _firestoreProvider = Provider((ref) => FirebaseFirestore.instance);
 

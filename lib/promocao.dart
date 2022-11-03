@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elas_promocoes/misc.dart';
+import 'package:elas_promocoes/helpers/currency_helper.dart';
 
 class Promocao {
   final String? id;

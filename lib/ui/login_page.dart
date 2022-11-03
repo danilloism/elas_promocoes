@@ -1,5 +1,5 @@
 import 'package:elas_promocoes/generated/assets.dart';
-import 'package:elas_promocoes/providers.dart';
+import 'package:elas_promocoes/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

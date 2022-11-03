@@ -2,8 +2,9 @@ import 'dart:html';
 
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
-import 'package:elas_promocoes/logger.dart';
 import 'package:elas_promocoes/providers.dart';
+import 'package:elas_promocoes/providers/auth_provider.dart';
+import 'package:elas_promocoes/services/logger.dart';
 import 'package:elas_promocoes/ui/editor_promocao.dart';
 import 'package:elas_promocoes/ui/login_page.dart';
 import 'package:elas_promocoes/ui/promocao_card.dart';
