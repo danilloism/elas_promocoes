@@ -11,7 +11,7 @@ class PromocaoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 150,
-      height: 250,
+      height: 270,
       child: Card(
         child: Column(
           children: [
@@ -20,10 +20,14 @@ class PromocaoCard extends StatelessWidget {
               height: 100,
               fit: BoxFit.cover,
             ),
-            Text(
-              promocao.nome,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                promocao.nome,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
             Text(
@@ -48,6 +52,7 @@ class PromocaoCard extends StatelessWidget {
                 ),
               ),
             ),
+            const Expanded(child: SizedBox()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextButton(
