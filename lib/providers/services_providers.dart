@@ -7,3 +7,6 @@ final promoServiceProvider = Provider((ref) {
       firestoreCollectionRef: ref.watch(promocoesCollectionProvider),
       storageRef: ref.watch(storageRefProvider));
 });
+
+final promocoesStreamProvider =
+    StreamProvider((ref) => ref.watch(promoServiceProvider).stream);

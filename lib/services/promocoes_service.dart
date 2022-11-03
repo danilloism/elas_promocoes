@@ -5,11 +5,11 @@ import 'package:elas_promocoes/promocao.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class PromocoesService {
-  final CollectionReference _firestoreCollectionRef;
+  final CollectionReference<Map<String, dynamic>> _firestoreCollectionRef;
   final Reference _storageRef;
 
   const PromocoesService({
-    required CollectionReference firestoreCollectionRef,
+    required CollectionReference<Map<String, dynamic>> firestoreCollectionRef,
     required Reference storageRef,
   })  : _firestoreCollectionRef = firestoreCollectionRef,
         _storageRef = storageRef;
@@ -38,5 +38,16 @@ class PromocoesService {
         refList.singleWhere((reference) => reference.name.contains(id));
     await _firestoreCollectionRef.doc(id).delete();
     await imgRef.delete();
+  }
+
+  Stream<List<Promocao>> get stream {
+    final snapshots = _firestoreCollectionRef.snapshots();
+    return snapshots.map(
+      (event) => event.docs
+          .map((document) =>
+              Promocao.fromJson(data: document.data(), id: document.id))
+          .toList()
+        ..sort((a, b) => b.criadoEm!.compareTo(a.criadoEm!)),
+    );
   }
 }
