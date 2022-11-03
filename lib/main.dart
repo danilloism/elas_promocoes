@@ -1,13 +1,12 @@
 import 'dart:html';
 
-import 'package:elas_promocoes/editor_promocao.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:elas_promocoes/logger.dart';
-import 'package:elas_promocoes/login_page.dart';
-import 'package:elas_promocoes/misc.dart';
-import 'package:elas_promocoes/promocao_card.dart';
 import 'package:elas_promocoes/providers.dart';
+import 'package:elas_promocoes/ui/editor_promocao.dart';
+import 'package:elas_promocoes/ui/login_page.dart';
+import 'package:elas_promocoes/ui/promocao_card.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -127,33 +126,14 @@ class MyHomePage extends ConsumerWidget {
                                                     child:
                                                         const Text("Cancelar")),
                                                 TextButton(
-                                                    onPressed: () async {
-                                                      final refList =
-                                                          (await storageRef
-                                                                  .child(
-                                                                      'imagens')
-                                                                  .listAll())
-                                                              .items;
-                                                      final imgRef =
-                                                          refList.singleWhere(
-                                                              (reference) =>
-                                                                  reference.name
-                                                                      .contains(
-                                                                          e.id!));
-                                                      ref
-                                                          .read(
-                                                              firestoreProvider)
-                                                          .collection(
-                                                              'promocoes')
-                                                          .doc(e.id)
-                                                          .delete()
-                                                          .whenComplete(() =>
-                                                              imgRef.delete())
-                                                          .whenComplete(() =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop());
-                                                    },
+                                                    onPressed: () => ref
+                                                        .read(
+                                                            promoServiceProvider)
+                                                        .remove(e.id!)
+                                                        .whenComplete(() =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop()),
                                                     child: const Text(
                                                         "Confirmar")),
                                               ],

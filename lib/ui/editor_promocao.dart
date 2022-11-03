@@ -1,14 +1,16 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elas_promocoes/misc.dart';
 import 'package:elas_promocoes/promocao.dart';
+import 'package:elas_promocoes/providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditorPromocao extends HookWidget {
+class EditorPromocao extends HookConsumerWidget {
   const EditorPromocao({super.key, this.promocao});
   final Promocao? promocao;
 
@@ -20,7 +22,7 @@ class EditorPromocao extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final nome = useTextEditingController();
     final link = useTextEditingController();
     final cupom = useTextEditingController();
@@ -42,11 +44,8 @@ class EditorPromocao extends HookWidget {
         actions: isLoading.value
             ? [const Center(child: CircularProgressIndicator())]
             : [
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancelar')),
                 ElevatedButton(
-                    onPressed: () async {
+                    onPressed: () {
                       if (key.value.currentState!.validate()) {
                         if (pickedFile.value == null && !_isEditar) {
                           mostrarErroImagemObrigatoria.value = true;
@@ -69,25 +68,20 @@ class EditorPromocao extends HookWidget {
                               descricao.text.isEmpty ? null : descricao.text,
                         );
 
-                        final savedDoc = await FirebaseFirestore.instance
-                            .collection('promocoes')
-                            .add(promocao.toJson());
+                        final promocoesService =
+                            ref.watch(promoServiceProvider);
 
-                        final imageData = await pickedFile.value!.readAsBytes();
+                        final imageData = pickedFile.value!.readAsBytes();
                         final imageExtension =
                             pickedFile.value!.name.split('.').last;
-                        final uploadedImage = await storageRef
-                            .child('imagens/${savedDoc.id}.$imageExtension')
-                            .putData(imageData);
 
-                        final imageUrl =
-                            await uploadedImage.ref.getDownloadURL();
-
-                        FirebaseFirestore.instance
-                            .collection('promocoes')
-                            .doc(savedDoc.id)
-                            .update({'img_url': imageUrl}).whenComplete(
-                                () => Navigator.of(context).pop());
+                        imageData.then((imgData) {
+                          return promocoesService.add(
+                            promocao: promocao,
+                            imageData: imgData,
+                            imageExtension: imageExtension,
+                          );
+                        }).whenComplete(() => Navigator.of(context).pop());
                       }
                     },
                     child: Text(_isEditar ? 'Salvar' : 'Adicionar')),
