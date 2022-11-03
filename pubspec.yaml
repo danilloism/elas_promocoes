@@ -11,14 +11,14 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.5
   flutter_riverpod: ^2.1.1
-  firebase_core: ^2.1.1
-  firebase_auth: ^4.1.1
+  firebase_core: ^2.1.0
+  firebase_auth: ^4.0.2
   currency_text_input_formatter: ^2.1.8
   image_picker: ^0.8.6
   flutter_hooks: ^0.18.5+1
-  cloud_firestore: ^4.0.4
+  cloud_firestore: ^4.0.2
   currency_formatter: ^2.0.0
-  firebase_storage: ^11.0.4
+  firebase_storage: ^11.0.2
   url_launcher: ^6.1.6
   share_plus: ^6.2.0
   hooks_riverpod: ^2.1.1
