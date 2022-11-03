@@ -112,7 +112,13 @@ class MyHomePage extends ConsumerWidget {
                                         child: const Text('Editar')),
                                     const SizedBox(width: 12),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          ref
+                                              .read(firestoreProvider)
+                                              .collection('promocoes')
+                                              .doc(e.id)
+                                              .delete();
+                                        },
                                         icon: const Icon(CupertinoIcons.trash)),
                                   ],
                                 ),
