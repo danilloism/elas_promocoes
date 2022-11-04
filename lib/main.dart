@@ -16,6 +16,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import './url_strategy_native_config.dart'
+    if (dart.library.html) './url_strategy_web_config.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,6 +30,7 @@ Future<void> main() async {
     observers: kReleaseMode ? null : [Logger()],
     child: const MyApp(),
   ));
+  urlConfig();
 }
 
 class MyApp extends ConsumerWidget {
@@ -39,6 +43,7 @@ class MyApp extends ConsumerWidget {
           routerServiceProvider.select((service) => service.router.generator)),
       title: 'Elas Promoções',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(centerTitle: true),
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
@@ -171,7 +176,8 @@ class MyHomePage extends ConsumerWidget {
                       ref.read(routerServiceProvider).router.navigateTo(
                             context,
                             '/login',
-                            transition: TransitionType.cupertino,
+                            transition:
+                                TransitionType.cupertinoFullScreenDialog,
                           );
                     },
                     child: const Text('Administrador')),
