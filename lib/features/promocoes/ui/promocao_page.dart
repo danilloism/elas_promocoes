@@ -32,14 +32,18 @@ class PromocaoPage extends ConsumerWidget {
         appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.all(8),
-          child: Column(
+          child: ListView(
             children: [
               Image.network(promocao.imagemUrl),
               Text(
                 promocao.nome,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              if (promocao.descricao != null) Text(promocao.descricao!),
+              if (promocao.descricao != null)
+                Text(
+                  promocao.descricao!,
+                  textAlign: TextAlign.justify,
+                ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
@@ -55,7 +59,6 @@ class PromocaoPage extends ConsumerWidget {
                   ),
                 ),
               ),
-              const Expanded(child: SizedBox()),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: TextButton(
