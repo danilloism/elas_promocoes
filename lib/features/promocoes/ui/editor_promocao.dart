@@ -67,8 +67,7 @@ class EditorPromocao extends HookConsumerWidget {
                               descricao.text.isEmpty ? null : descricao.text,
                         );
 
-                        final promocoesService =
-                            ref.watch(promoServiceProvider);
+                        final promocoesService = ref.read(promoServiceProvider);
 
                         final imageData = pickedFile.value!.readAsBytes();
                         final imageExtension =

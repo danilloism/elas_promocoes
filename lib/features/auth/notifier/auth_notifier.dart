@@ -6,9 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthUserModel?> {
   late final StreamSubscription<User?> _sub;
-  final FirebaseAuth auth;
 
-  AuthNotifier(this.auth) : super(null) {
+  AuthNotifier(FirebaseAuth auth) : super(null) {
     _sub = auth.authStateChanges().listen((event) {
       if (event?.email != state?.email) {
         if (event?.email == null) {
