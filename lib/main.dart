@@ -1,15 +1,16 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' show window;
 
+import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
-import 'package:elas_promocoes/features/auth/ui/login_page.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:elas_promocoes/features/promocoes/ui/editor_promocao.dart';
 import 'package:elas_promocoes/features/promocoes/ui/promocao_card.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,14 @@ Future<void> main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
+      onGenerateRoute: ref.watch(
+          routerServiceProvider.select((service) => service.router.generator)),
       title: 'Elas Promoções',
       theme: ThemeData(
         primarySwatch: Colors.orange,
@@ -43,7 +46,7 @@ class MyApp extends StatelessWidget {
             ? '-apple-system'
             : null,
       ),
-      home: const MyHomePage(),
+      initialRoute: '/',
     );
   }
 }
@@ -165,8 +168,11 @@ class MyHomePage extends ConsumerWidget {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const LoginPage()));
+                      ref.read(routerServiceProvider).router.navigateTo(
+                            context,
+                            '/login',
+                            transition: TransitionType.cupertino,
+                          );
                     },
                     child: const Text('Administrador')),
               ],
