@@ -79,10 +79,11 @@ class PromocaoPage extends ConsumerWidget {
     );
   }
 
-  Widget get _error => const Scaffold(body: Text('Erro!'));
+  Widget get _error => Scaffold(appBar: AppBar(), body: const Text('Erro!'));
   Widget get _loading => Scaffold(
-          body: Center(
-              child: Column(
+      appBar: AppBar(),
+      body: Center(
+          child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           CircularProgressIndicator(),
