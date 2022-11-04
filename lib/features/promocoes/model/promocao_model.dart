@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elas_promocoes/helpers/currency_helper.dart';
+import 'package:elas_promocoes/core/helpers/currency_helper.dart';
 
-class Promocao {
+class PromocaoModel {
   final String? id;
   final String nome;
   final String url;
@@ -11,7 +11,7 @@ class Promocao {
   final String valor;
   final String? descricao;
 
-  Promocao({
+  PromocaoModel({
     this.id,
     required this.nome,
     required this.url,
@@ -22,9 +22,9 @@ class Promocao {
     this.descricao,
   });
 
-  factory Promocao.fromJson(
+  factory PromocaoModel.fromJson(
           {required Map<String, dynamic> data, required String id}) =>
-      Promocao(
+      PromocaoModel(
         id: id,
         nome: data['nome'],
         url: data['url'],

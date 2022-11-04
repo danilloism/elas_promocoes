@@ -1,18 +1,17 @@
 import 'dart:io';
 
-import 'package:elas_promocoes/helpers/currency_helper.dart';
-import 'package:elas_promocoes/promocao.dart';
+import 'package:elas_promocoes/core/helpers/currency_helper.dart';
+import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
+import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../providers/providers.dart';
-
 class EditorPromocao extends HookConsumerWidget {
   const EditorPromocao({super.key, this.promocao});
-  final Promocao? promocao;
+  final PromocaoModel? promocao;
 
   bool get _isEditar => promocao != null;
 
@@ -58,7 +57,7 @@ class EditorPromocao extends HookConsumerWidget {
 
                         isLoading.value = true;
 
-                        final promocao = Promocao(
+                        final promocao = PromocaoModel(
                           nome: nome.text,
                           url: link.text,
                           valor: valor.text,
@@ -89,7 +88,6 @@ class EditorPromocao extends HookConsumerWidget {
         content: SizedBox(
           width: double.maxFinite,
           child: ListView(
-            // shrinkWrap: true,
             children: [
               const Text('Nome do produto:'),
               TextFormField(

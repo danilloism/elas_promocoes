@@ -1,12 +1,13 @@
 import 'dart:html' show window;
 
+import 'package:elas_promocoes/core/services/logger.dart';
+import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
+import 'package:elas_promocoes/features/auth/ui/login_page.dart';
+import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
+import 'package:elas_promocoes/features/promocoes/ui/editor_promocao.dart';
+import 'package:elas_promocoes/features/promocoes/ui/promocao_card.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
-import 'package:elas_promocoes/providers/providers.dart';
-import 'package:elas_promocoes/services/logger.dart';
-import 'package:elas_promocoes/ui/editor_promocao.dart';
-import 'package:elas_promocoes/ui/login_page.dart';
-import 'package:elas_promocoes/ui/promocao_card.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -51,7 +52,7 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final logado = ref.watch(authStateNotifierProvider) != null;
+    final logado = ref.watch(authStateProvider) != null;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -75,8 +76,7 @@ class MyHomePage extends ConsumerWidget {
         actions: logado
             ? [
                 IconButton(
-                  onPressed: () =>
-                      ref.read(authStateNotifierProvider.notifier).deslogar(),
+                  onPressed: () => ref.read(authServiceProvider).deslogar(),
                   icon: const Icon(Icons.logout),
                 )
               ]
@@ -94,7 +94,7 @@ class MyHomePage extends ConsumerWidget {
                   spacing: 10,
                   children: ref.watch(promocoesStreamProvider).when(
                         data: (data) => data.map((e) {
-                          if (ref.watch(authStateNotifierProvider) == null) {
+                          if (ref.watch(authStateProvider) == null) {
                             return PromocaoCard(
                                 promocao: e, key: ValueKey(e.id));
                           }

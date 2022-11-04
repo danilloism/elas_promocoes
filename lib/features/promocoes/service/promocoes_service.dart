@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elas_promocoes/promocao.dart';
+import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class PromocoesService {
@@ -15,7 +15,7 @@ class PromocoesService {
         _storageRef = storageRef;
 
   Future<void> add({
-    required Promocao promocao,
+    required PromocaoModel promocao,
     required Uint8List imageData,
     required String imageExtension,
   }) async {
@@ -40,12 +40,12 @@ class PromocoesService {
     await imgRef.delete();
   }
 
-  Stream<List<Promocao>> get stream {
+  Stream<List<PromocaoModel>> get stream {
     final snapshots = _firestoreCollectionRef.snapshots();
     return snapshots.map(
       (event) => event.docs
           .map((document) =>
-              Promocao.fromJson(data: document.data(), id: document.id))
+              PromocaoModel.fromJson(data: document.data(), id: document.id))
           .toList()
         ..sort((a, b) => b.criadoEm!.compareTo(a.criadoEm!)),
     );

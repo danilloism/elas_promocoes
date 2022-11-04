@@ -1,5 +1,5 @@
+import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/generated/assets.dart';
-import 'package:elas_promocoes/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -70,7 +70,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             final email = _emailController.text;
                             final senha = _senhaController.text;
                             ref
-                                .read(authStateNotifierProvider.notifier)
+                                .read(authServiceProvider)
                                 .logar(email: email, senha: senha)
                                 .whenComplete(() {
                               if (mounted) {

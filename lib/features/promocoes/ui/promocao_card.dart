@@ -1,11 +1,11 @@
-import 'package:elas_promocoes/promocao.dart';
+import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PromocaoCard extends StatelessWidget {
   const PromocaoCard({super.key, required this.promocao});
-  final Promocao promocao;
+  final PromocaoModel promocao;
 
   @override
   Widget build(BuildContext context) {
