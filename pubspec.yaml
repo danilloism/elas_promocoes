@@ -1,6 +1,6 @@
 name: elas_promocoes
 description: Catálogo online de promoções da Ela Promoções.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -30,6 +30,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
+  flutter_native_splash: ^2.2.13
 
 flutter:
   uses-material-design: true
