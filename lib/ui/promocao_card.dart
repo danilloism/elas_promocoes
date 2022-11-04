@@ -41,7 +41,7 @@ class PromocaoCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  final uri = Uri.parse('https://elas-promocoes.web.app/');
+                  final uri = Uri.parse(promocao.url);
                   if (await canLaunchUrl(uri)) {
                     await launchUrl(uri);
                   }
