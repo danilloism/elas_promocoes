@@ -1,8 +1,7 @@
-import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,11 +12,7 @@ class PromocaoCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: () => ref.read(routerServiceProvider).router.navigateTo(
-            context,
-            '/${promocao.id}',
-            transition: TransitionType.cupertino,
-          ),
+      onTap: () => context.push('/view/${promocao.id}', extra: promocao),
       child: SizedBox(
         width: 150,
         height: 270,

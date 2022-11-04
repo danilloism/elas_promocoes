@@ -5,16 +5,15 @@ import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
-import 'package:elas_promocoes/features/promocoes/ui/editor_promocao.dart';
 import 'package:elas_promocoes/features/promocoes/ui/promocao_card.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import './url_strategy_native_config.dart'
     if (dart.library.html) './url_strategy_web_config.dart';
@@ -38,9 +37,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      onGenerateRoute: ref.watch(
-          routerServiceProvider.select((service) => service.router.generator)),
+    return MaterialApp.router(
       title: 'Elas Promoções',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(centerTitle: true),
@@ -51,7 +48,8 @@ class MyApp extends ConsumerWidget {
             ? '-apple-system'
             : null,
       ),
-      initialRoute: '/',
+      routerConfig:
+          ref.watch(routerServiceProvider.select((service) => service.router)),
     );
   }
 }
@@ -73,14 +71,9 @@ class MyHomePage extends ConsumerWidget {
           isAntiAlias: true,
         ),
         leading: logado
-            ? Builder(builder: (context) {
-                return IconButton(
-                    onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => const EditorPromocao(),
-                        ),
-                    icon: const Icon(Icons.add));
-              })
+            ? IconButton(
+                onPressed: () => context.push('/adicionar'),
+                icon: const Icon(Icons.add))
             : null,
         actions: logado
             ? [
@@ -116,7 +109,8 @@ class MyHomePage extends ConsumerWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     TextButton(
-                                        onPressed: () {},
+                                        onPressed: () => context
+                                            .push('/editar/${e.id}', extra: e),
                                         child: const Text('Editar')),
                                     const SizedBox(width: 12),
                                     IconButton(
@@ -173,12 +167,7 @@ class MyHomePage extends ConsumerWidget {
               children: [
                 TextButton(
                     onPressed: () {
-                      ref.read(routerServiceProvider).router.navigateTo(
-                            context,
-                            '/login',
-                            transition:
-                                TransitionType.cupertinoFullScreenDialog,
-                          );
+                      context.push('/login');
                     },
                     child: const Text('Administrador')),
               ],
