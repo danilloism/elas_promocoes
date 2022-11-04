@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:html' show window;
 
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
@@ -52,7 +52,6 @@ class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final logado = ref.watch(authStateNotifierProvider) != null;
-    ref.listen(authStateNotifierProvider, (previous, next) {});
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

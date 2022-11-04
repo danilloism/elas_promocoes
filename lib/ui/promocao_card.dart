@@ -57,7 +57,7 @@ class PromocaoCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextButton(
                 onPressed: () => Share.share(
-                    '${promocao.nome} por apenas ${promocao.valor}. Confira: ${promocao.url}'),
+                    '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/'),
                 child: const Text(
                   'Compartilhar',
                   textAlign: TextAlign.center,
