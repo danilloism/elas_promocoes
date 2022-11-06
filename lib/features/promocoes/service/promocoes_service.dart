@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elas_promocoes/core/const.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -21,7 +22,7 @@ class PromocoesService {
   }) async {
     final savedDoc = await _firestoreCollectionRef.add(promocao.toJson());
     final uploadedImage = await _storageRef
-        .child('imagens/${savedDoc.id}.$imageExtension')
+        .child('$kImagensStorageRefName/${savedDoc.id}.$imageExtension')
         .putData(imageData);
 
     final imageUrl = await uploadedImage.ref.getDownloadURL();
@@ -32,7 +33,8 @@ class PromocoesService {
   }
 
   Future<void> remove(String id) async {
-    final refList = (await _storageRef.child('imagens').listAll()).items;
+    final refList =
+        (await _storageRef.child(kImagensStorageRefName).listAll()).items;
     final imgRef =
         refList.singleWhere((reference) => reference.name.contains(id));
     await Future.wait([
@@ -47,13 +49,14 @@ class PromocoesService {
   }) async {
     assert(promocao.id != null);
     if (imageData != null) {
-      final refList = (await _storageRef.child('imagens').listAll()).items;
+      final refList =
+          (await _storageRef.child(kImagensStorageRefName).listAll()).items;
       var imgRef = refList
           .singleWhere((reference) => reference.name.contains(promocao.id!));
       await imgRef.putData(imageData);
     }
 
-    await _firestoreCollectionRef.doc(promocao.id).update(promocao.toJson());
+    await _firestoreCollectionRef.doc(promocao.id!).update(promocao.toJson());
   }
 
   Stream<List<PromocaoModel>> get stream {

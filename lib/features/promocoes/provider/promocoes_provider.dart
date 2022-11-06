@@ -1,3 +1,4 @@
+import 'package:elas_promocoes/core/const.dart';
 import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:elas_promocoes/features/promocoes/service/promocoes_service.dart';
