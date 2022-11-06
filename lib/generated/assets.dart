@@ -3,4 +3,5 @@ class Assets {
   Assets._();
 
   static const String logo = 'assets/logo.png';
+  static const String logoComNome = 'assets/logo_com_nome.png';
 }

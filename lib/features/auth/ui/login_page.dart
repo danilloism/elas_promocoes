@@ -45,7 +45,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  Assets.logo,
+                  Assets.logoComNome,
                   height: MediaQuery.of(context).size.height / 4,
                 ),
                 TextFormField(

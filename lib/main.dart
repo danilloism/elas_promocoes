@@ -69,6 +69,7 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final logado = ref.watch(authStateProvider) != null;
     return Scaffold(
+      drawer: Drawer(width: MediaQuery.of(context).size.width / 2),
       appBar: AppBar(
         centerTitle: true,
         // title: Image.asset(
@@ -78,16 +79,24 @@ class MyHomePage extends ConsumerWidget {
         //   width: 80,
         //   isAntiAlias: true,
         // ),
-        title: Text('Elas\nPromoções',
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              height: 1,
-            )),
-        leading: logado
-            ? IconButton(
-                onPressed: () => context.push('/adicionar'),
-                icon: const Icon(Icons.add))
-            : null,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Image.asset(
+                Assets.logo,
+                height: 50,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text('Elas\nPromoções',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  height: 1,
+                )),
+          ],
+        ),
         actions: logado
             ? [
                 IconButton(
@@ -97,6 +106,12 @@ class MyHomePage extends ConsumerWidget {
               ]
             : null,
       ),
+      floatingActionButton: logado
+          ? FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () => context.push('/adicionar'),
+            )
+          : null,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -113,7 +128,6 @@ class MyHomePage extends ConsumerWidget {
                             return PromocaoCard(
                                 promocao: e, key: ValueKey(e.id));
                           }
-
                           return Card(
                             key: ValueKey(e.id),
                             child: Column(
