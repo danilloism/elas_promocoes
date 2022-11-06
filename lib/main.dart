@@ -15,6 +15,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import './url_strategy_native_config.dart'
     if (dart.library.html) './url_strategy_web_config.dart';
@@ -70,13 +71,18 @@ class MyHomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Image.asset(
-          Assets.logo,
-          fit: BoxFit.cover,
-          height: 80,
-          width: 80,
-          isAntiAlias: true,
-        ),
+        // title: Image.asset(
+        //   Assets.logo,
+        //   fit: BoxFit.cover,
+        //   height: 80,
+        //   width: 80,
+        //   isAntiAlias: true,
+        // ),
+        title: Text('Elas\nPromoções',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              height: 1,
+            )),
         leading: logado
             ? IconButton(
                 onPressed: () => context.push('/adicionar'),
