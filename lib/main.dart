@@ -125,7 +125,7 @@ class MyHomePage extends ConsumerWidget {
                                         onPressed: () => context
                                             .push('/editar/${e.id}', extra: e),
                                         child: const Text('Editar')),
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: 20),
                                     IconButton(
                                         onPressed: () {
                                           showDialog(
