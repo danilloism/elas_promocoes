@@ -12,8 +12,21 @@ class PromocaoPage extends ConsumerWidget {
 
   Widget Function(Object, StackTrace) get _error =>
       (_, __) => Scaffold(appBar: AppBar());
-  Widget Function() get _loading => () =>
-      Scaffold(appBar: AppBar(title: const Text('Carregando promoção...')));
+  Widget Function() get _loading => () => Scaffold(
+        appBar: AppBar(title: const Text('Carregando promoção...')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            Center(child: CircularProgressIndicator()),
+            SizedBox(height: 8),
+            Text(
+              'Aguarde um momento...',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

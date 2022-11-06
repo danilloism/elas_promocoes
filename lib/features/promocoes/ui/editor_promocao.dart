@@ -57,7 +57,12 @@ class EditorPromocao extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(isEditar.value ? 'Editar Promoção' : 'Adicionar Promoção'),
         actions: isLoading.value
-            ? const [Center(child: CircularProgressIndicator())]
+            ? const [
+                Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              ]
             : [
                 IconButton(
                   icon: const Icon(Icons.done),

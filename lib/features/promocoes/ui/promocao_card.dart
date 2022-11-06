@@ -14,50 +14,69 @@ class PromocaoCard extends ConsumerWidget {
     return InkWell(
       onTap: () => context.push('/view/${promocao.id}'),
       child: SizedBox(
-        width: 150,
-        height: 270,
+        width: 170,
+        height: 300,
         child: Card(
           child: Column(
             children: [
               if (promocao.imagemUrl.isNotEmpty)
-                Image.network(
-                  promocao.imagemUrl,
-                  height: 100,
-                  fit: BoxFit.cover,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      image: DecorationImage(
+                        image: NetworkImage(promocao.imagemUrl),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                 child: Text(
                   promocao.nome,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
+              const Expanded(child: SizedBox()),
               Text(
                 promocao.valor,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.green,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final uri = Uri.parse(promocao.url);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri);
-                    }
-                  },
-                  child: const Text(
-                    'Comprar agora!',
-                    textAlign: TextAlign.center,
-                  ),
+                  fontSize: 18,
                 ),
               ),
               const Expanded(child: SizedBox()),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final uri = Uri.parse(promocao.url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Comprar agora!',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: TextButton(

@@ -1,6 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' show window;
 
+import 'package:device_preview/device_preview.dart';
 import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
@@ -25,9 +26,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ProviderScope(
-    observers: kReleaseMode ? null : [Logger()],
-    child: const MyApp(),
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => ProviderScope(
+      observers: kReleaseMode ? null : [Logger()],
+      child: const MyApp(),
+    ),
   ));
   urlConfig();
 }
@@ -38,12 +42,15 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
       title: 'Elas Promoções',
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(centerTitle: true),
+        appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        useMaterial3: true,
+        // useMaterial3: true,
         fontFamily: kIsWeb && window.navigator.userAgent.contains('OS 15_')
             ? '-apple-system'
             : null,
@@ -63,11 +70,11 @@ class MyHomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        toolbarHeight: 120,
         title: Image.asset(
           Assets.logo,
-          fit: BoxFit.contain,
-          height: 120,
+          fit: BoxFit.cover,
+          height: 80,
+          width: 80,
           isAntiAlias: true,
         ),
         leading: logado

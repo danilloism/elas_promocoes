@@ -1,6 +1,5 @@
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/features/auth/ui/login_page.dart';
-import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:elas_promocoes/features/promocoes/ui/editor_promocao.dart';
 import 'package:elas_promocoes/features/promocoes/ui/promocao_page.dart';
 import 'package:elas_promocoes/main.dart';
