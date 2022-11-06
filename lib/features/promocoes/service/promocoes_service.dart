@@ -23,7 +23,7 @@ class PromocoesService {
     final savedDoc = await _firestoreCollectionRef.add(promocao.toJson());
     final uploadedImage = await _storageRef
         .child('$kImagensStorageRefName/${savedDoc.id}.$imageExtension')
-        .putData(imageData);
+        .putData(imageData, _getSettableMetadata(imageExtension));
 
     final imageUrl = await uploadedImage.ref.getDownloadURL();
 
