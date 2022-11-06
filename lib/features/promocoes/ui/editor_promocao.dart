@@ -156,24 +156,27 @@ class EditorPromocao extends HookConsumerWidget {
                 if (promocaoToEdit.value?.imagemUrl != null &&
                     pickedFile.value == null)
                   Image.network(promocaoToEdit.value!.imagemUrl),
-                ElevatedButton(
-                    style: pickedFile.value != null
-                        ? ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(15),
-                                bottomRight: Radius.circular(15),
-                              ),
-                            ),
-                          )
-                        : null,
-                    onPressed: () async {
-                      pickedFile.value = await picker.value.pickImage(
-                          source: ImageSource.gallery, imageQuality: 50);
-                    },
-                    child: isEditar.value
-                        ? const Text('Alterar Imagem')
-                        : const Text('Selecionar Imagem.')),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment:
+                      (isEditar.value && pickedFile.value != null)
+                          ? MainAxisAlignment.spaceAround
+                          : MainAxisAlignment.center,
+                  children: [
+                    if (isEditar.value && pickedFile.value != null)
+                      ElevatedButton(
+                          onPressed: () => pickedFile.value = null,
+                          child: const Text('Desfazer alteração')),
+                    ElevatedButton(
+                        onPressed: () async {
+                          pickedFile.value = await picker.value.pickImage(
+                              source: ImageSource.gallery, imageQuality: 50);
+                        },
+                        child: isEditar.value
+                            ? const Text('Alterar Imagem')
+                            : const Text('Selecionar Imagem.')),
+                  ],
+                ),
                 if (mostrarErroImagemObrigatoria.value)
                   const Text(
                     'Por favor, selecione uma imagem para o produto.',
