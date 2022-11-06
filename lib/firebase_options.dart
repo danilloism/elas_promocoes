@@ -21,9 +21,15 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -54,23 +60,5 @@ class DefaultFirebaseOptions {
     authDomain: 'elas-promocoes.firebaseapp.com',
     storageBucket: 'elas-promocoes.appspot.com',
     measurementId: 'G-G4WQ2ZBM98',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCt_DkEzP6lTENr9pgUWaZiZRXG5GPFVQ8',
-    appId: '1:407957103785:android:36f3ad88fc8cea51c535b8',
-    messagingSenderId: '407957103785',
-    projectId: 'elas-promocoes',
-    storageBucket: 'elas-promocoes.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCMbHZYVd9lureAhhY-pboftSWRixjVPKs',
-    appId: '1:407957103785:ios:8caeac94e965e795c535b8',
-    messagingSenderId: '407957103785',
-    projectId: 'elas-promocoes',
-    storageBucket: 'elas-promocoes.appspot.com',
-    iosClientId: '407957103785-8bvd08lpkjc5g360rvmucii09gv5gtb7.apps.googleusercontent.com',
-    iosBundleId: 'com.dnn.elasPromocoes',
   );
 }
