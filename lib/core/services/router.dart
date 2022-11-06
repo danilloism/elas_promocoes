@@ -21,7 +21,7 @@ class RouterService {
           GoRoute(
             path: 'view/:id',
             builder: (context, state) =>
-                PromocaoPage(promocao: state.extra as PromocaoModel),
+                PromocaoPage(promocaoId: state.params['id']!),
           ),
           GoRoute(
             path: 'login',

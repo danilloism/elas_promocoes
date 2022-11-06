@@ -12,7 +12,7 @@ class PromocaoCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: () => context.push('/view/${promocao.id}', extra: promocao),
+      onTap: () => context.push('/view/${promocao.id}'),
       child: SizedBox(
         width: 150,
         height: 270,
