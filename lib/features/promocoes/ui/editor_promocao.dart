@@ -113,6 +113,7 @@ class EditorPromocao extends HookConsumerWidget {
                           return promocoesService.update(
                             promocao,
                             imageData: imgData,
+                            imageExt: imageExtension,
                           );
                         }
                         return promocoesService.add(

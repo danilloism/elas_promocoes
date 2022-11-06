@@ -46,17 +46,33 @@ class PromocoesService {
   Future<void> update(
     PromocaoModel promocao, {
     Uint8List? imageData,
+    String? imageExt,
   }) async {
     assert(promocao.id != null);
+    assert((imageData == null && imageExt == null) ||
+        (imageData != null && imageExt != null));
+
     if (imageData != null) {
       final refList =
           (await _storageRef.child(kImagensStorageRefName).listAll()).items;
       var imgRef = refList
           .singleWhere((reference) => reference.name.contains(promocao.id!));
-      await imgRef.putData(imageData);
+      await imgRef.delete();
+      final newImg = await _storageRef
+          .child('$kImagensStorageRefName/${promocao.id}.$imageExt')
+          .putData(imageData, _getSettableMetadata(imageExt!));
+      final downloadUrl = await newImg.ref.getDownloadURL();
+      promocao = promocao.copyWith(imagemUrl: downloadUrl);
     }
 
     await _firestoreCollectionRef.doc(promocao.id!).update(promocao.toJson());
+  }
+
+  SettableMetadata _getSettableMetadata(String extension) {
+    if (extension == 'jpg') {
+      extension = 'jpeg';
+    }
+    return SettableMetadata(contentType: 'image/$extension');
   }
 
   Stream<List<PromocaoModel>> get stream {
