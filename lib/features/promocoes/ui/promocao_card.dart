@@ -19,11 +19,12 @@ class PromocaoCard extends ConsumerWidget {
         child: Card(
           child: Column(
             children: [
-              Image.network(
-                promocao.imagemUrl,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+              if (promocao.imagemUrl.isNotEmpty)
+                Image.network(
+                  promocao.imagemUrl,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
@@ -61,7 +62,7 @@ class PromocaoCard extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: TextButton(
                   onPressed: () => Share.share(
-                      '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/${promocao.id}'),
+                      '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/view/${promocao.id}'),
                   child: const Text(
                     'Compartilhar',
                     textAlign: TextAlign.center,

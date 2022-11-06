@@ -22,6 +22,47 @@ class PromocaoModel {
     this.descricao,
   });
 
+  factory PromocaoModel.empty() => PromocaoModel(
+        nome: '',
+        url: '',
+        imagemUrl: '',
+        valor: '',
+      );
+
+  bool get isEmpty {
+    return nome == '' &&
+        url == '' &&
+        imagemUrl == '' &&
+        valor == '' &&
+        id == null &&
+        cupom == null &&
+        criadoEm == null &&
+        descricao == null;
+  }
+
+  PromocaoModel copyWith({
+    String? id,
+    String? nome,
+    String? url,
+    String? imagemUrl,
+    String? valor,
+    String? cupom,
+    DateTime? criadoEm,
+    String? descricao,
+  }) =>
+      PromocaoModel(
+        valor: valor ?? this.valor,
+        url: url ?? this.url,
+        imagemUrl: imagemUrl ?? this.imagemUrl,
+        nome: nome ?? this.nome,
+        descricao: descricao ?? this.descricao,
+        cupom: cupom ?? this.cupom,
+        criadoEm: criadoEm ?? this.criadoEm,
+        id: id ?? this.id,
+      );
+
+  bool get isNotEmpty => !isEmpty;
+
   factory PromocaoModel.fromJson(
           {required Map<String, dynamic> data, required String id}) =>
       PromocaoModel(

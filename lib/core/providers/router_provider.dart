@@ -1,3 +1,3 @@
 part of 'providers.dart';
 
-final routerServiceProvider = Provider((ref) => RouterService());
+final routerServiceProvider = Provider((ref) => RouterService(ref));

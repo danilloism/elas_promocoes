@@ -14,13 +14,12 @@ class PromocoesService {
   })  : _firestoreCollectionRef = firestoreCollectionRef,
         _storageRef = storageRef;
 
-  Future<void> add({
-    required PromocaoModel promocao,
+  Future<void> add(
+    PromocaoModel promocao, {
     required Uint8List imageData,
     required String imageExtension,
   }) async {
     final savedDoc = await _firestoreCollectionRef.add(promocao.toJson());
-
     final uploadedImage = await _storageRef
         .child('imagens/${savedDoc.id}.$imageExtension')
         .putData(imageData);
@@ -36,8 +35,25 @@ class PromocoesService {
     final refList = (await _storageRef.child('imagens').listAll()).items;
     final imgRef =
         refList.singleWhere((reference) => reference.name.contains(id));
-    await _firestoreCollectionRef.doc(id).delete();
-    await imgRef.delete();
+    await Future.wait([
+      _firestoreCollectionRef.doc(id).delete(),
+      imgRef.delete(),
+    ]);
+  }
+
+  Future<void> update(
+    PromocaoModel promocao, {
+    Uint8List? imageData,
+  }) async {
+    assert(promocao.id != null);
+    if (imageData != null) {
+      final refList = (await _storageRef.child('imagens').listAll()).items;
+      var imgRef = refList
+          .singleWhere((reference) => reference.name.contains(promocao.id!));
+      await imgRef.putData(imageData);
+    }
+
+    await _firestoreCollectionRef.doc(promocao.id).update(promocao.toJson());
   }
 
   Stream<List<PromocaoModel>> get stream {
