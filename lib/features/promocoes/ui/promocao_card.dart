@@ -1,4 +1,6 @@
+import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
+import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -70,7 +72,7 @@ class _HorizontalCard extends StatelessWidget {
                         promocao.nome,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
-                        maxLines: 2,
+                        maxLines: 3,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -78,11 +80,70 @@ class _HorizontalCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  IconButton(
-                    alignment: Alignment.topCenter,
-                    onPressed: () {},
-                    icon: const Icon(Icons.more_horiz_outlined),
-                  ),
+                  Consumer(builder: (context, ref, _) {
+                    final logado = ref.watch(authStateProvider) != null;
+                    if (logado) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: PopupMenuButton(
+                          // icon: const Icon(Icons.more_horiz_outlined),
+                          onSelected: (value) {
+                            switch (value) {
+                              case 0:
+                                Share.share(
+                                    '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/view/${promocao.id}');
+                                break;
+                              case 1:
+                                context.push('/editar/${promocao.id}');
+                                break;
+                              case 2:
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text(
+                                        "Confirmar exclusão do item ${promocao.nome}?"),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text("Cancelar")),
+                                      TextButton(
+                                          onPressed: () => ref
+                                              .read(promoServiceProvider)
+                                              .remove(promocao.id!)
+                                              .whenComplete(() =>
+                                                  Navigator.of(context).pop()),
+                                          child: const Text("Confirmar")),
+                                    ],
+                                  ),
+                                );
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) {
+                            return [
+                              const PopupMenuItem(
+                                value: 0,
+                                child: Text('Compartilhar'),
+                              ),
+                              const PopupMenuItem(
+                                value: 1,
+                                child: Text('Editar'),
+                              ),
+                              const PopupMenuItem(
+                                value: 2,
+                                child: Text('Excluir'),
+                              ),
+                            ];
+                          },
+                        ),
+                      );
+                    }
+                    return IconButton(
+                        onPressed: () => Share.share(
+                            '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/view/${promocao.id}'),
+                        icon: const Icon(Icons.share));
+                  }),
                 ],
               ),
               const SizedBox(height: 16),
