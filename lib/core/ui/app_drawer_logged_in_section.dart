@@ -32,7 +32,7 @@ class AppDrawerLoggedInSection extends StatelessWidget {
         TextButton(
           onPressed: () async {
             final uri = Uri.parse(
-                'https://wa.me/+5562996962850/?text=${Uri.encodeComponent('Olá, Danillo. Queria falar com você sobre o Elas Promoções.')}');
+                'https://wa.me/+5562995305195/?text=${Uri.encodeComponent('Olá, Danillo. Queria falar com você sobre o Elas Promoções.')}');
 
             if (await canLaunchUrl(uri)) {
               await launchUrl(uri)
