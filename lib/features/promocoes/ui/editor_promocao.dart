@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:elas_promocoes/core/helpers/currency_helper.dart';
+import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -57,12 +58,7 @@ class EditorPromocao extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(isEditar.value ? 'Editar Promoção' : 'Adicionar Promoção'),
         actions: isLoading.value
-            ? const [
-                Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              ]
+            ? const [Loading(color: Colors.white), SizedBox(width: 8)]
             : [
                 IconButton(
                   icon: const Icon(Icons.done),

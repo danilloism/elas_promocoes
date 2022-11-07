@@ -1,3 +1,6 @@
+import 'package:elas_promocoes/core/const.dart';
+import 'package:elas_promocoes/core/extensions/ui_extensions.dart';
+import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:elas_promocoes/features/promocoes/ui/promocao_card.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +17,7 @@ class ListaPromocoes extends ConsumerWidget {
         final promocoesAsyncValue = ref.watch(promocoesStreamProvider);
         return promocoesAsyncValue.when(
           data: (promocoes) {
-            if (constraints.maxWidth > 480) {
+            if (!constraints.isMobile) {
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: constraints.maxHeight / 1.5,
@@ -34,37 +37,24 @@ class ListaPromocoes extends ConsumerWidget {
               );
             }
 
-            return ListView(
-              children: [
-                ListView.separated(
-                  shrinkWrap: true,
-                  separatorBuilder: (_, __) => const SizedBox(height: 8),
-                  itemCount: promocoes.length,
-                  itemBuilder: (context, index) {
-                    final promocao = promocoes[index];
-                    return PromocaoCard.horizontal(
-                      promocao,
-                      key: ValueKey(promocao.id!),
-                    );
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          context.push('/login');
-                        },
-                        child: const Text('Administrador')),
-                  ],
-                ),
-              ],
+            return ListView.separated(
+              shrinkWrap: true,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemCount: promocoes.length,
+              itemBuilder: (context, index) {
+                final promocao = promocoes[index];
+                return PromocaoCard.horizontal(
+                  promocao,
+                  key: ValueKey(promocao.id!),
+                );
+              },
             );
           },
           error: (_, __) => const Text('Erro'),
           loading: () => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              CircularProgressIndicator(),
+              Loading(),
               Text('Carregando...'),
             ],
           ),

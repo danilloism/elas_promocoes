@@ -1,8 +1,11 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' show window;
 
+import 'package:elas_promocoes/core/const.dart';
+import 'package:elas_promocoes/core/extensions/ui_extensions.dart';
 import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
+import 'package:elas_promocoes/core/ui/app_drawer.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/features/promocoes/ui/lista_promocoes.dart';
 import 'package:elas_promocoes/firebase_options.dart';
@@ -51,7 +54,7 @@ class MyApp extends ConsumerWidget {
             : null,
       ),
       routerConfig:
-          ref.read(routerServiceProvider.select((service) => service.router)),
+          ref.watch(routerServiceProvider.select((service) => service.router)),
     );
   }
 }
@@ -62,47 +65,54 @@ class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final logado = ref.watch(authStateProvider) != null;
-    return Scaffold(
-      // drawer: AppDrawer(),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2),
-              child: Image.asset(
-                Assets.logo,
-                height: 50,
+    return LayoutBuilder(builder: (context, contraints) {
+      return Scaffold(
+        drawer: contraints.isMobile ? const AppDrawer() : null,
+        persistentFooterButtons: const [
+          Text('Copyright © 2022 Danillo Ilggner',
+              style: TextStyle(fontSize: 10)),
+        ],
+        persistentFooterAlignment: AlignmentDirectional.center,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Image.asset(
+                  Assets.logo,
+                  height: 50,
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            Text('Elas\nPromoções',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                  height: 1,
-                )),
-          ],
+              const SizedBox(width: 8),
+              Text('Elas\nPromoções',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    height: 1,
+                  )),
+            ],
+          ),
+          actions: logado
+              ? [
+                  IconButton(
+                    onPressed: () => ref.read(authServiceProvider).deslogar(),
+                    icon: const Icon(Icons.logout),
+                  )
+                ]
+              : null,
         ),
-        actions: logado
-            ? [
-                IconButton(
-                  onPressed: () => ref.read(authServiceProvider).deslogar(),
-                  icon: const Icon(Icons.logout),
-                )
-              ]
+        floatingActionButton: logado && contraints.isMobile
+            ? FloatingActionButton(
+                child: const Icon(Icons.add),
+                onPressed: () => context.push('/adicionar'),
+              )
             : null,
-      ),
-      floatingActionButton: logado
-          ? FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: () => context.push('/adicionar'),
-            )
-          : null,
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: ListaPromocoes(),
-      ),
-    );
+        body: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: ListaPromocoes(),
+        ),
+      );
+    });
   }
 }

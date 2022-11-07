@@ -1,3 +1,4 @@
+import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 8),
                 _isLoading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Loading()
                     : ElevatedButton(
                         onPressed: () {
                           if (_key.currentState!.validate()) {

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-final kPromocoesCollectionName = kReleaseMode ? 'promocoes' : 'promocoes-dev';
-final kImagensStorageRefName = kReleaseMode ? 'imagens' : 'imagens-dev';
+const kPromocoesCollectionName = kReleaseMode ? 'promocoes' : 'promocoes-dev';
+const kImagensStorageRefName = kReleaseMode ? 'imagens' : 'imagens-dev';
+const kMobileDeviceWidth = 480;

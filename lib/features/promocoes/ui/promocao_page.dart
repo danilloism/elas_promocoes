@@ -1,4 +1,4 @@
-import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
+import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +18,7 @@ class PromocaoPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: const [
-            Center(child: CircularProgressIndicator()),
+            Loading(),
             SizedBox(height: 8),
             Text(
               'Aguarde um momento...',
