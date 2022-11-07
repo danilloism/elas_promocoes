@@ -23,9 +23,12 @@ class ListaPromocoes extends ConsumerWidget {
                 itemCount: promocoes.length,
                 itemBuilder: (context, index) {
                   final promocao = promocoes[index];
-                  return PromocaoCard.vertical(
-                    promocao,
-                    key: ValueKey(promocao.id!),
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PromocaoCard.vertical(
+                      promocao,
+                      key: ValueKey(promocao.id!),
+                    ),
                   );
                 },
               );
@@ -39,9 +42,8 @@ class ListaPromocoes extends ConsumerWidget {
                   itemCount: promocoes.length,
                   itemBuilder: (context, index) {
                     final promocao = promocoes[index];
-                    return PromocaoCard(
-                      promocao: promocao,
-                      isVertical: false,
+                    return PromocaoCard.horizontal(
+                      promocao,
                       key: ValueKey(promocao.id!),
                     );
                   },

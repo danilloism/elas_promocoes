@@ -8,11 +8,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PromocaoCard extends ConsumerWidget {
-  const PromocaoCard(
-      {super.key, required this.promocao, required bool isVertical})
-      : _isVertical = isVertical;
   final PromocaoModel promocao;
   const PromocaoCard.vertical(this.promocao, {super.key}) : _isVertical = true;
+  const PromocaoCard.horizontal(this.promocao, {super.key})
+      : _isVertical = false;
   final bool _isVertical;
 
   @override
@@ -22,6 +21,9 @@ class PromocaoCard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.amber[50],
         borderRadius: const BorderRadius.all(Radius.circular(15)),
+        border: Border.all(
+          color: Colors.amberAccent[100]!,
+        ),
       ),
       child: InkWell(
           onTap: () => context.push('/view/${promocao.id}'),

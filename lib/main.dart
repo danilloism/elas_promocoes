@@ -1,14 +1,10 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' show window;
 
-import 'package:device_preview/device_preview.dart';
 import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
-import 'package:elas_promocoes/core/ui/app_drawer.dart';
-import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:elas_promocoes/features/promocoes/ui/lista_promocoes.dart';
-import 'package:elas_promocoes/features/promocoes/ui/promocao_card.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,13 +25,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => ProviderScope(
+  runApp(
+    ProviderScope(
       observers: kReleaseMode ? null : [Logger()],
       child: const MyApp(),
     ),
-  ));
+  );
   urlConfig();
 }
 
@@ -45,9 +40,6 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       title: 'Elas Promoções',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
@@ -59,7 +51,7 @@ class MyApp extends ConsumerWidget {
             : null,
       ),
       routerConfig:
-          ref.watch(routerServiceProvider.select((service) => service.router)),
+          ref.read(routerServiceProvider.select((service) => service.router)),
     );
   }
 }
@@ -71,16 +63,9 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final logado = ref.watch(authStateProvider) != null;
     return Scaffold(
-      drawer: AppDrawer(),
+      // drawer: AppDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        // title: Image.asset(
-        //   Assets.logo,
-        //   fit: BoxFit.cover,
-        //   height: 80,
-        //   width: 80,
-        //   isAntiAlias: true,
-        // ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -117,74 +102,6 @@ class MyHomePage extends ConsumerWidget {
       body: const Padding(
         padding: EdgeInsets.all(8.0),
         child: ListaPromocoes(),
-        // child: SingleChildScrollView(
-        //   // child: Wrap(
-        //     alignment: WrapAlignment.center,
-        //     spacing: 10,
-        //     children: ref.watch(promocoesStreamProvider).when(
-        //           data: (data) => data.map((e) {
-        //             if (ref.watch(authStateProvider) == null) {
-        //               return PromocaoCard(
-        //                   promocao: e, key: ValueKey(e.id));
-        //             }
-        //             return Card(
-        //               key: ValueKey(e.id),
-        //               child: Column(
-        //                 children: [
-        //                   Row(
-        //                     mainAxisSize: MainAxisSize.min,
-        //                     children: [
-        //                       TextButton(
-        //                           onPressed: () => context
-        //                               .push('/editar/${e.id}', extra: e),
-        //                           child: const Text('Editar')),
-        //                       const SizedBox(width: 20),
-        //                       IconButton(
-        //                           onPressed: () {
-        //                             showDialog(
-        //                               context: context,
-        //                               builder: (context) => AlertDialog(
-        //                                 title: Text(
-        //                                     "Confirmar exclusão do item ${e.nome}?"),
-        //                                 actions: [
-        //                                   ElevatedButton(
-        //                                       onPressed: () =>
-        //                                           Navigator.of(context)
-        //                                               .pop(),
-        //                                       child:
-        //                                           const Text("Cancelar")),
-        //                                   TextButton(
-        //                                       onPressed: () => ref
-        //                                           .read(
-        //                                               promoServiceProvider)
-        //                                           .remove(e.id!)
-        //                                           .whenComplete(() =>
-        //                                               Navigator.of(
-        //                                                       context)
-        //                                                   .pop()),
-        //                                       child: const Text(
-        //                                           "Confirmar")),
-        //                                 ],
-        //                               ),
-        //                             );
-        //                           },
-        //                           icon: const Icon(CupertinoIcons.trash)),
-        //                     ],
-        //                   ),
-        //                   PromocaoCard(promocao: e),
-        //                 ],
-        //               ),
-        //             );
-        //           }).toList(),
-        //           error: (_, __) => const [Text('Erro')],
-        //           loading: () => const [
-        //             Center(
-        //               child: CircularProgressIndicator(),
-        //             ),
-        //           ],
-        //         ),
-        //   ),
-        // ),
       ),
     );
   }
