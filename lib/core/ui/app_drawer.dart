@@ -52,7 +52,7 @@ class AppDrawer extends ConsumerWidget {
                   ),
             const SizedBox(height: 12),
             TextButton(
-              onPressed: () => context.push('/login'),
+              onPressed: () {},
               child: Row(
                 children: const [
                   Icon(Icons.question_mark),
@@ -69,7 +69,7 @@ class AppDrawer extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             TextButton(
-              onPressed: () => context.push('/login'),
+              onPressed: () {},
               child: Row(
                 children: const [
                   Icon(Icons.contact_page),

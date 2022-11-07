@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elas_promocoes/core/extensions/string_extensions.dart';
 import 'package:elas_promocoes/core/helpers/currency_helper.dart';
 
 class PromocaoModel {
@@ -46,17 +47,17 @@ class PromocaoModel {
     String? url,
     String? imagemUrl,
     String? valor,
-    String? cupom,
+    required String? cupom,
     DateTime? criadoEm,
-    String? descricao,
+    required String? descricao,
   }) =>
       PromocaoModel(
         valor: valor ?? this.valor,
         url: url ?? this.url,
         imagemUrl: imagemUrl ?? this.imagemUrl,
         nome: nome ?? this.nome,
-        descricao: descricao ?? this.descricao,
-        cupom: cupom ?? this.cupom,
+        descricao: descricao.valueOrNull,
+        cupom: cupom.valueOrNull,
         criadoEm: criadoEm ?? this.criadoEm,
         id: id ?? this.id,
       );
