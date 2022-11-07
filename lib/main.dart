@@ -5,6 +5,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
+import 'package:elas_promocoes/core/ui/app_drawer.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:elas_promocoes/features/promocoes/ui/lista_promocoes.dart';
 import 'package:elas_promocoes/features/promocoes/ui/promocao_card.dart';
@@ -70,7 +71,7 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final logado = ref.watch(authStateProvider) != null;
     return Scaffold(
-      drawer: Drawer(width: MediaQuery.of(context).size.width / 2),
+      drawer: AppDrawer(),
       appBar: AppBar(
         centerTitle: true,
         // title: Image.asset(
@@ -113,95 +114,77 @@ class MyHomePage extends ConsumerWidget {
               onPressed: () => context.push('/adicionar'),
             )
           : null,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListaPromocoes(),
-              // child: SingleChildScrollView(
-              //   // child: Wrap(
-              //     alignment: WrapAlignment.center,
-              //     spacing: 10,
-              //     children: ref.watch(promocoesStreamProvider).when(
-              //           data: (data) => data.map((e) {
-              //             if (ref.watch(authStateProvider) == null) {
-              //               return PromocaoCard(
-              //                   promocao: e, key: ValueKey(e.id));
-              //             }
-              //             return Card(
-              //               key: ValueKey(e.id),
-              //               child: Column(
-              //                 children: [
-              //                   Row(
-              //                     mainAxisSize: MainAxisSize.min,
-              //                     children: [
-              //                       TextButton(
-              //                           onPressed: () => context
-              //                               .push('/editar/${e.id}', extra: e),
-              //                           child: const Text('Editar')),
-              //                       const SizedBox(width: 20),
-              //                       IconButton(
-              //                           onPressed: () {
-              //                             showDialog(
-              //                               context: context,
-              //                               builder: (context) => AlertDialog(
-              //                                 title: Text(
-              //                                     "Confirmar exclusão do item ${e.nome}?"),
-              //                                 actions: [
-              //                                   ElevatedButton(
-              //                                       onPressed: () =>
-              //                                           Navigator.of(context)
-              //                                               .pop(),
-              //                                       child:
-              //                                           const Text("Cancelar")),
-              //                                   TextButton(
-              //                                       onPressed: () => ref
-              //                                           .read(
-              //                                               promoServiceProvider)
-              //                                           .remove(e.id!)
-              //                                           .whenComplete(() =>
-              //                                               Navigator.of(
-              //                                                       context)
-              //                                                   .pop()),
-              //                                       child: const Text(
-              //                                           "Confirmar")),
-              //                                 ],
-              //                               ),
-              //                             );
-              //                           },
-              //                           icon: const Icon(CupertinoIcons.trash)),
-              //                     ],
-              //                   ),
-              //                   PromocaoCard(promocao: e),
-              //                 ],
-              //               ),
-              //             );
-              //           }).toList(),
-              //           error: (_, __) => const [Text('Erro')],
-              //           loading: () => const [
-              //             Center(
-              //               child: CircularProgressIndicator(),
-              //             ),
-              //           ],
-              //         ),
-              //   ),
-              // ),
-            ),
-          ),
-          if (!logado)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                    onPressed: () {
-                      context.push('/login');
-                    },
-                    child: const Text('Administrador')),
-              ],
-            ),
-        ],
+      body: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ListaPromocoes(),
+        // child: SingleChildScrollView(
+        //   // child: Wrap(
+        //     alignment: WrapAlignment.center,
+        //     spacing: 10,
+        //     children: ref.watch(promocoesStreamProvider).when(
+        //           data: (data) => data.map((e) {
+        //             if (ref.watch(authStateProvider) == null) {
+        //               return PromocaoCard(
+        //                   promocao: e, key: ValueKey(e.id));
+        //             }
+        //             return Card(
+        //               key: ValueKey(e.id),
+        //               child: Column(
+        //                 children: [
+        //                   Row(
+        //                     mainAxisSize: MainAxisSize.min,
+        //                     children: [
+        //                       TextButton(
+        //                           onPressed: () => context
+        //                               .push('/editar/${e.id}', extra: e),
+        //                           child: const Text('Editar')),
+        //                       const SizedBox(width: 20),
+        //                       IconButton(
+        //                           onPressed: () {
+        //                             showDialog(
+        //                               context: context,
+        //                               builder: (context) => AlertDialog(
+        //                                 title: Text(
+        //                                     "Confirmar exclusão do item ${e.nome}?"),
+        //                                 actions: [
+        //                                   ElevatedButton(
+        //                                       onPressed: () =>
+        //                                           Navigator.of(context)
+        //                                               .pop(),
+        //                                       child:
+        //                                           const Text("Cancelar")),
+        //                                   TextButton(
+        //                                       onPressed: () => ref
+        //                                           .read(
+        //                                               promoServiceProvider)
+        //                                           .remove(e.id!)
+        //                                           .whenComplete(() =>
+        //                                               Navigator.of(
+        //                                                       context)
+        //                                                   .pop()),
+        //                                       child: const Text(
+        //                                           "Confirmar")),
+        //                                 ],
+        //                               ),
+        //                             );
+        //                           },
+        //                           icon: const Icon(CupertinoIcons.trash)),
+        //                     ],
+        //                   ),
+        //                   PromocaoCard(promocao: e),
+        //                 ],
+        //               ),
+        //             );
+        //           }).toList(),
+        //           error: (_, __) => const [Text('Erro')],
+        //           loading: () => const [
+        //             Center(
+        //               child: CircularProgressIndicator(),
+        //             ),
+        //           ],
+        //         ),
+        //   ),
+        // ),
       ),
     );
   }

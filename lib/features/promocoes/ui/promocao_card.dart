@@ -17,7 +17,10 @@ class PromocaoCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return DecoratedBox(
       key: key,
-      decoration: BoxDecoration(),
+      decoration: BoxDecoration(
+        color: Colors.amber[50],
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+      ),
       child: InkWell(
           onTap: () => context.push('/view/${promocao.id}'),
           child: _isVertical
@@ -37,20 +40,24 @@ class _HorizontalCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       key: key,
       children: [
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            image: DecorationImage(
-              image: NetworkImage(promocao.imagemUrl),
-              fit: BoxFit.cover,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+              image: DecorationImage(
+                image: NetworkImage(promocao.imagemUrl),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         const SizedBox(width: 8),
         Flexible(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,16 +70,49 @@ class _HorizontalCard extends StatelessWidget {
                         promocao.nome,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
-                        maxLines: 3,
-                        textAlign: TextAlign.justify,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
                   IconButton(
-                      alignment: Alignment.topCenter,
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_horiz_outlined)),
+                    alignment: Alignment.topCenter,
+                    onPressed: () {},
+                    icon: const Icon(Icons.more_horiz_outlined),
+                  ),
                 ],
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      promocao.valor,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                        fontSize: 18,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final uri = Uri.parse(promocao.url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                      child: const Text(
+                        'Comprar\nagora!',
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
