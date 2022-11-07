@@ -1,3 +1,4 @@
+import 'package:elas_promocoes/core/extensions/ui_extensions.dart';
 import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
 import 'package:flutter/material.dart';
@@ -35,47 +36,73 @@ class PromocaoPage extends ConsumerWidget {
         error: _error,
         loading: _loading,
         data: (promocao) => Scaffold(
+              persistentFooterAlignment: AlignmentDirectional.centerStart,
+              persistentFooterButtons: [
+                ElevatedButton(
+                  onPressed: () async {
+                    final uri = Uri.parse(promocao.url);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Comprar agora!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Share.share(
+                      '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/${promocao.id}'),
+                  child: const Text(
+                    'Compartilhar',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
               appBar: AppBar(),
               body: Padding(
                 padding: const EdgeInsets.all(8),
                 child: ListView(
                   children: [
-                    Image.network(promocao.imagemUrl),
-                    Text(
-                      promocao.nome,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    LayoutBuilder(builder: (context, constraints) {
+                      return Container(
+                        height: constraints.isMobile ? 220 : 300,
+                        padding: constraints.isMobile
+                            ? null
+                            : EdgeInsets.symmetric(
+                                horizontal: constraints.maxWidth / 5),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            image: DecorationImage(
+                              image: NetworkImage(promocao.imagemUrl),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Text(
+                        promocao.nome,
+                        style: const TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     if (promocao.descricao != null)
                       Text(
                         promocao.descricao!,
                         textAlign: TextAlign.justify,
                       ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final uri = Uri.parse(promocao.url);
-                          if (await canLaunchUrl(uri)) {
-                            await launchUrl(uri);
-                          }
-                        },
-                        child: const Text(
-                          'Comprar agora!',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextButton(
-                        onPressed: () => Share.share(
-                            '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/${promocao.id}'),
-                        child: const Text(
-                          'Compartilhar',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

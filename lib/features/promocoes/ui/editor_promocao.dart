@@ -81,9 +81,8 @@ class EditorPromocao extends HookConsumerWidget {
                           nome: nome.text,
                           url: link.text,
                           valor: valor.text,
-                          cupom: cupom.text.isEmpty ? null : cupom.text,
-                          descricao:
-                              descricao.text.isEmpty ? null : descricao.text,
+                          cupom: cupom.text,
+                          descricao: descricao.text,
                         );
                       } else {
                         promocao = PromocaoModel(
@@ -152,12 +151,19 @@ class EditorPromocao extends HookConsumerWidget {
                 const Text('Imagem:'),
                 const SizedBox(height: 8),
                 if (pickedFile.value != null)
-                  kIsWeb
-                      ? Image.network(pickedFile.value!.path)
-                      : Image.file(File(pickedFile.value!.path)),
+                  SizedBox(
+                      height: 200,
+                      child: kIsWeb
+                          ? Image.network(pickedFile.value!.path)
+                          : Image.file(File(pickedFile.value!.path))),
+                // kIsWeb
+                //     ? Image.network(pickedFile.value!.path)
+                //     : Image.file(File(pickedFile.value!.path)),
                 if (promocaoToEdit.value?.imagemUrl != null &&
                     pickedFile.value == null)
-                  Image.network(promocaoToEdit.value!.imagemUrl),
+                  SizedBox(
+                      height: 200,
+                      child: Image.network(promocaoToEdit.value!.imagemUrl)),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment:
@@ -176,7 +182,7 @@ class EditorPromocao extends HookConsumerWidget {
                         },
                         child: isEditar.value
                             ? const Text('Alterar Imagem')
-                            : const Text('Selecionar Imagem.')),
+                            : const Text('Selecionar Imagem')),
                   ],
                 ),
                 if (mostrarErroImagemObrigatoria.value)
@@ -204,6 +210,7 @@ class EditorPromocao extends HookConsumerWidget {
                 const SizedBox(height: 8),
                 const Text('Descrição:'),
                 TextFormField(
+                  maxLines: null,
                   controller: descricao,
                   keyboardType: TextInputType.multiline,
                 ),

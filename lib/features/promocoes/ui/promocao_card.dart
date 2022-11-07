@@ -1,3 +1,4 @@
+import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
@@ -101,23 +102,41 @@ class _HorizontalCard extends StatelessWidget {
                               case 2:
                                 showDialog(
                                   context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text(
-                                        "Confirmar exclusão do item ${promocao.nome}?"),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(),
-                                          child: const Text("Cancelar")),
-                                      TextButton(
-                                          onPressed: () => ref
-                                              .read(promoServiceProvider)
-                                              .remove(promocao.id!)
-                                              .whenComplete(() =>
-                                                  Navigator.of(context).pop()),
-                                          child: const Text("Confirmar")),
-                                    ],
-                                  ),
+                                  builder: (context) {
+                                    bool isLoading = false;
+                                    return StatefulBuilder(
+                                        builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Text(
+                                            "Confirmar exclusão do item ${promocao.nome}?"),
+                                        actions: isLoading
+                                            ? const [Loading()]
+                                            : [
+                                                ElevatedButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child:
+                                                        const Text("Cancelar")),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      setState(() =>
+                                                          isLoading = true);
+                                                      ref
+                                                          .read(
+                                                              promoServiceProvider)
+                                                          .remove(promocao.id!)
+                                                          .whenComplete(() =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop());
+                                                    },
+                                                    child: const Text(
+                                                        "Confirmar")),
+                                              ],
+                                      );
+                                    });
+                                  },
                                 );
                                 break;
                             }

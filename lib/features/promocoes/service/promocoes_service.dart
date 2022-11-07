@@ -62,7 +62,11 @@ class PromocoesService {
           .child('$kImagensStorageRefName/${promocao.id}.$imageExt')
           .putData(imageData, _getSettableMetadata(imageExt!));
       final downloadUrl = await newImg.ref.getDownloadURL();
-      promocao = promocao.copyWith(imagemUrl: downloadUrl);
+      promocao = promocao.copyWith(
+        imagemUrl: downloadUrl,
+        cupom: promocao.cupom,
+        descricao: promocao.descricao,
+      );
     }
 
     await _firestoreCollectionRef.doc(promocao.id!).update(promocao.toJson());
