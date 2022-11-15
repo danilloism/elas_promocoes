@@ -65,18 +65,18 @@ class PromocaoPage extends ConsumerWidget {
                   ),
                 ),
               ],
-              appBar: AppBar(),
+              appBar: AppBar(backgroundColor: Colors.transparent),
               body: Padding(
                 padding: const EdgeInsets.all(8),
                 child: ListView(
                   children: [
                     LayoutBuilder(builder: (context, constraints) {
                       return Container(
-                        height: constraints.isMobile ? 220 : 300,
+                        height: /*constraints.isMobile ? 300 :*/ 300,
                         padding: constraints.isMobile
                             ? null
                             : EdgeInsets.symmetric(
-                                horizontal: constraints.maxWidth / 5),
+                                horizontal: constraints.maxWidth / 3),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             borderRadius:

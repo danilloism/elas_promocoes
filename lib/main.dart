@@ -1,7 +1,6 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' show window;
 
-import 'package:elas_promocoes/core/const.dart';
 import 'package:elas_promocoes/core/extensions/ui_extensions.dart';
 import 'package:elas_promocoes/core/providers/providers.dart';
 import 'package:elas_promocoes/core/services/logger.dart';
@@ -11,7 +10,6 @@ import 'package:elas_promocoes/features/promocoes/ui/lista_promocoes.dart';
 import 'package:elas_promocoes/firebase_options.dart';
 import 'package:elas_promocoes/generated/assets.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,7 +100,7 @@ class MyHomePage extends ConsumerWidget {
                 ]
               : null,
         ),
-        floatingActionButton: logado && contraints.isMobile
+        floatingActionButton: logado /*&& contraints.isMobile*/
             ? FloatingActionButton(
                 child: const Icon(Icons.add),
                 onPressed: () => context.push('/adicionar'),

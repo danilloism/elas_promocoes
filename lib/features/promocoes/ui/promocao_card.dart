@@ -2,6 +2,7 @@ import 'package:elas_promocoes/core/ui/loading.dart';
 import 'package:elas_promocoes/features/auth/provider/auth_provider.dart';
 import 'package:elas_promocoes/features/promocoes/model/promocao_model.dart';
 import 'package:elas_promocoes/features/promocoes/provider/promocoes_provider.dart';
+import 'package:elas_promocoes/features/promocoes/ui/options_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -87,78 +88,8 @@ class _HorizontalCard extends StatelessWidget {
                     final logado = ref.watch(authStateProvider) != null;
                     if (logado) {
                       return Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: PopupMenuButton(
-                          // icon: const Icon(Icons.more_horiz_outlined),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 0:
-                                Share.share(
-                                    '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/view/${promocao.id}');
-                                break;
-                              case 1:
-                                context.push('/editar/${promocao.id}');
-                                break;
-                              case 2:
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    bool isLoading = false;
-                                    return StatefulBuilder(
-                                        builder: (context, setState) {
-                                      return AlertDialog(
-                                        title: Text(
-                                            "Confirmar exclusão do item ${promocao.nome}?"),
-                                        actions: isLoading
-                                            ? const [Loading()]
-                                            : [
-                                                ElevatedButton(
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(),
-                                                    child:
-                                                        const Text("Cancelar")),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      setState(() =>
-                                                          isLoading = true);
-                                                      ref
-                                                          .read(
-                                                              promoServiceProvider)
-                                                          .remove(promocao.id!)
-                                                          .whenComplete(() =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop());
-                                                    },
-                                                    child: const Text(
-                                                        "Confirmar")),
-                                              ],
-                                      );
-                                    });
-                                  },
-                                );
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) {
-                            return [
-                              const PopupMenuItem(
-                                value: 0,
-                                child: Text('Compartilhar'),
-                              ),
-                              const PopupMenuItem(
-                                value: 1,
-                                child: Text('Editar'),
-                              ),
-                              const PopupMenuItem(
-                                value: 2,
-                                child: Text('Excluir'),
-                              ),
-                            ];
-                          },
-                        ),
-                      );
+                          padding: const EdgeInsets.only(left: 4),
+                          child: OptionsPopup(promocao));
                     }
                     return IconButton(
                         onPressed: () => Share.share(
@@ -204,12 +135,13 @@ class _HorizontalCard extends StatelessWidget {
   }
 }
 
-class _VerticalCard extends StatelessWidget {
+class _VerticalCard extends ConsumerWidget {
   const _VerticalCard(this.promocao, {super.key});
   final PromocaoModel promocao;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final logado = ref.watch(authStateProvider) != null;
     return SizedBox(
       key: key,
       width: 170,
@@ -217,6 +149,11 @@ class _VerticalCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (logado)
+            Align(
+                alignment: Alignment.centerRight,
+                child: OptionsPopup(promocao,
+                    icon: const Icon(Icons.more_horiz_outlined))),
           if (promocao.imagemUrl.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
@@ -278,17 +215,18 @@ class _VerticalCard extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextButton(
-              onPressed: () => Share.share(
-                  '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/view/${promocao.id}'),
-              child: const Text(
-                'Compartilhar',
-                textAlign: TextAlign.center,
+          if (!logado)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TextButton(
+                onPressed: () => Share.share(
+                    '${promocao.nome} por apenas ${promocao.valor}. Confira: https://elas-promocoes.web.app/view/${promocao.id}'),
+                child: const Text(
+                  'Compartilhar',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
